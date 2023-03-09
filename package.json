@@ -1,0 +1,36 @@
+{
+  "name": "checkout",
+  "version": "1.0.0",
+  "main": "server/index.js",
+  "scripts": {
+    "server-dev": "npx nodemon --watch api api/index.js",
+    "client-dev": "npx webpack --watch",
+    "build": "npx webpack",
+    "start": "node api/index.js",
+    "test": "npx jest --watch"
+  },
+  "license": "Unlicensed",
+  "dependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/plugin-transform-runtime": "^7.21.0",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/runtime": "^7.21.0",
+    "axios": "^0.21.1",
+    "babel-loader": "^8.2.2",
+    "bluebird": "^3.7.2",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "nodemon": "^2.0.21",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "sequelize": "^6.29.1",
+    "uuid": "^8.3.2",
+    "webpack": "^5.41.0",
+    "webpack-cli": "^4.7.2"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
+}
