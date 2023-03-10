@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require("uuid");
 const { con, sequelize } = require('../db/index.js');
 
-module.exports = async (req, res, next) => {
+var handleSession = async (req, res, next) => {
   /**
    *
    * Parse cookies in incoming request:
@@ -20,10 +20,22 @@ module.exports = async (req, res, next) => {
 
   if (parsedCookies.s_id) {
     req.session = await sequelize.models.Session.findOne({ where: { hash: parsedCookies.s_id }});
+    if(req.session === null) {
+      req.session = await createSession();
+      res.cookie("s_id", req.session.dataValues.hash);
+    }
   } else {
-    req.session = await sequelize.models.Session.create({ hash: uuidv4() });
+    req.session = await createSession();
+    console.log('creating session')
     res.cookie("s_id", req.session.dataValues.hash);
   }
+  console.log(req.session);
 
   next();
 };
+
+var createSession = async (UserId) => {
+  return await sequelize.models.Session.create({ hash: uuidv4(), UserId: UserId || null });
+}
+
+module.exports = { createSession, handleSession };

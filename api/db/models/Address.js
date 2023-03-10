@@ -15,6 +15,7 @@ class Address extends Model {
 
 Address.init({
   id: { type: INTEGER, allowNull: false, primaryKey: true, autoIncrement: true },
+  name: { type: STRING, allowNull: false },
   line1: { type: STRING, allowNull: false },
   line2: { type: STRING, allowNull: false },
   city: { type: STRING, allowNull: false },

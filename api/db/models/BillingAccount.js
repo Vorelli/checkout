@@ -16,7 +16,7 @@ class BillingAccount extends Model {
 BillingAccount.init({
   id: { type: INTEGER, allowNull: false, primaryKey: true, autoIncrement: true },
   cardNum: { type: STRING(24), allowNull: false },
-  expirationDate: { type: DATEONLY, allowNull: false },
+  expirationDate: { type: STRING(7), allowNull: false },
   zip: { type: STRING(10), allowNull: false }
 }, {sequelize})
 
