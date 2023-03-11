@@ -13,7 +13,7 @@ import Order from './components/Order.jsx';
 import Orders from './components/Orders.jsx';
 import Header from './components/Header.jsx';
 import ErrorPage from './components/ErrorPage.jsx';
-const url = process.env.URL;
+const url = 'http://localhost:4444/';
 import './styles/reset.sass';
 import './styles/style.sass';
 
