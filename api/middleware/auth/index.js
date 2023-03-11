@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
-const { createSession } = require('../session-handler.js');
-const obj = require('../session-handler.js');
-console.log(obj);
+// const { createSession } = require('../sessionHandler.js');
+// const obj = require('../sessionHandler.js');
+// console.log(obj);
 const saltRounds = 10;
 
 module.exports.hashPass = async (password) => {
@@ -29,7 +29,7 @@ module.exports.getUser = async(req, res, next) => {
   next();
 }
 
-module.exports.createAndAttachNewSession = async function (req, res, UserId = null) {
-  req.session = await createSession(UserId);
-  res.cookie('s_id', req.session.dataValues.hash);
-};
+// module.exports.createAndAttachNewSession = async function (req, res, UserId = null) {
+//   req.session = await createSession(UserId);
+//   res.cookie('s_id', req.session.dataValues.hash);
+// };

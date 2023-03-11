@@ -1,8 +1,10 @@
 import { Formik } from 'formik';
 import { useState, useEffect } from 'react';
+import BillingAccountList from './BillingAccountList.jsx';
 
 const CreditInformation = ({ url }) => {
   let [email, setEmail] = useState(null);
+  const [fetchAgain, setFetchAgain] = useState(true);
   useEffect(() => {
     fetch(url + '/api/user', { method: 'GET' })
       .then(res => res.json())
@@ -39,7 +41,8 @@ const CreditInformation = ({ url }) => {
               });
               res = await res.json();
               if(res.message === 'Billing account added!') {
-                window.location.href = url + '/summaryPage'
+                // window.location.href = url + '/summaryPage'
+                setFetchAgain(true);
               } else {
                 setFieldError('Failed:', res && [res.error] || ['Failed']);
               }
@@ -115,6 +118,8 @@ const CreditInformation = ({ url }) => {
           )
         }}
       </Formik>
+      <BillingAccountList url={url} fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+      <button onClick={() => window.location.href=url + '/summaryPage'}>Order Summary</button>
     </div>
   );
 };

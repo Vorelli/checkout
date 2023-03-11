@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { createUser } = require('../db/models/User.js');
-const { createSession } = require('../middleware/session-handler.js');
-const { compare, getUser, createAndAttachNewSession } = require('../middleware/auth/index.js');
+const { compare, getUser } = require('../middleware/auth/index.js');
+const { createAndAttachNewSession } = require('../middleware/auth/sessionHelper.js');
 
 router.get('/', (req, res) => {
   if(req.session.dataValues.UserId) {
@@ -108,8 +108,8 @@ router.post('/submitOrder', getUser, async (req, res) => {
   try {
     const cvv = req.body.cvv;
     //process order...
-    const billingAccount = await res.locals.sequelize.models.BillingAccount.findOne({ where: { UserId: req.user.dataValues.id } });
-    const address = await res.locals.sequelize.models.Address.findOne({ where: { UserId: req.user.dataValues.id } });
+    const billingAccount = await res.locals.sequelize.models.BillingAccount.findOne({ where: { id: req.user.dataValues.BillingAccountId } });
+    const address = await res.locals.sequelize.models.Address.findOne({ where: { id: req.user.dataValues.AddressId } });
     const order = await res.locals.sequelize.models.Order.create({
       UserId: req.user.dataValues.id,
       BillingAccountId: billingAccount.dataValues.id,
@@ -121,7 +121,7 @@ router.post('/submitOrder', getUser, async (req, res) => {
       name: 'Bag of Honey',
       description: 'A big bag of honey. Sack has 50L capacity, but it will probably be empty by the time it arrives.',
     });
-    const orderItems = await res.locals.sequelize.models.OrderItem.create({ quantity: 1, OrderId: order.dataValues.id });
+    const orderItems = await res.locals.sequelize.models.OrderItem.create({ quantity: 1, OrderId: order.dataValues.id, ItemId: item.dataValues.id });
     return res.json({ message: 'Order submitted!' });
   } catch(err) {
     res.json(err);

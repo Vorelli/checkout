@@ -9,10 +9,13 @@ import SignUp from './components/SignUp.jsx';
 import ShippingInfo from './components/ShippingInfo.jsx';
 import CreditInformation from './components/CreditInformation.jsx';
 import SummaryPage from './components/SummaryPage.jsx';
+import Order from './components/Order.jsx';
 import Orders from './components/Orders.jsx';
 import Header from './components/Header.jsx';
 import ErrorPage from './components/ErrorPage.jsx';
 const url = 'http://localhost:4444';
+import './styles/reset.sass';
+import './styles/style.sass';
 
 const userAuth = (ev) => {
   ev.preventDefault();
@@ -57,6 +60,10 @@ const router = createBrowserRouter([
   {
     path: '/orders',
     element: <Orders url={url} />
+  },
+  {
+    path: '/orders/:id',
+    element: <Order url={url} />
   },
   {
     path: '/',

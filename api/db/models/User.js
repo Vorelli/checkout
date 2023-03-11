@@ -1,6 +1,8 @@
 const sequelize = require('../db.js');
 const { Model, DataTypes } = require('sequelize');
 const { hashPass } = require('../../middleware/auth/index.js');
+const obj = require('../../middleware/auth/index.js');
+console.log(obj);
 const { INTEGER, STRING } = DataTypes;
 
 class User extends Model {
@@ -24,6 +26,16 @@ class User extends Model {
     await this.save();
     return billingAccount;
   }
+
+  async changeAddress({ AddressId }) {
+    this.AddressId = AddressId;
+    await this.save();
+  }
+
+  async changeBilling({ BillingAccountId }) {
+    this.BillingAccountId = BillingAccountId;
+    await this.save();
+  }
 };
 
 User.init({
@@ -40,7 +52,7 @@ module.exports.createUser = async ({ email, password }) => {
     const user = await User.create({ email, passHash: hash, passSalt: salt });
     return user;
   } catch(err) {
-    if(err) console.log('error creating user');
+    if(err) console.log('error creating user', err);
     throw err;
   }
 };

@@ -9,12 +9,12 @@ const Orders = ({ url }) => {
       .then(res => res.json())
       .catch(err => {
         console.log('error encountered', err);
-        //window.location.href = url + '/';
+        window.location.href = url + '/';
       });
     responseJson.then(res => {
       if(!res || !res.orders || res.err) {
         console.log('error encountered', res);
-        //window.location.href = url + '/';
+        window.location.href = url + '/';
       } else {
         setOrders(res.orders)
       }

@@ -1,14 +1,18 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
-const { handleSession } = require("./middleware/session-handler");
+const { createAndAttachNewSession } = require("./middleware/auth/sessionHelper.js");
+const { handleSession } = require("./middleware/sessionHandler");
+const obj = require("./middleware/sessionHandler");
+console.log(obj, 'in server.js');
 const logger = require("./middleware/logger");
-const { createAndAttachNewSession } = require("./middleware/auth/index.js");
 const { sequelize } = require("./db/index.js");
 const cors = require('cors');
 const checkoutHandler = require('./handlers/checkout.js');
 const userHandler = require('./handlers/user.js');
 const ordersHandler = require('./handlers/orders.js');
+const addressHandler = require('./handlers/address.js');
+const creditInformationHandler = require('./handlers/creditInformation.js');
 
 
 const allowlist = ['http://localhost:4444', undefined];
@@ -43,7 +47,9 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use('/api/checkout', checkoutHandler);
 app.use('/api/orders', ordersHandler);
 app.use('/api/user', userHandler);
-app.use('/signout', async (req, res) => {
+app.use('/api/addresses', addressHandler);
+app.use('/api/creditInformation', creditInformationHandler);
+app.get('/signout', async (req, res) => {
   await createAndAttachNewSession(req, res);
   res.redirect('/');
 })

@@ -1,8 +1,10 @@
 import { Formik } from 'formik';
 import { useState, useEffect } from 'react';
+import AddressList from './AddressList.jsx';
 
 const ShippingInfo = ({ url }) => {
   let [email, setEmail] = useState(null);
+  const [fetchAgain, setFetchAgain] = useState(true);
   useEffect(() => {
     fetch(url + '/api/user', { method: 'GET' })
       .then(res => res.json())
@@ -30,7 +32,7 @@ const ShippingInfo = ({ url }) => {
             });
             res = await res.json();
             if(res.message === 'Address added!') {
-              window.location.href = url + '/creditInformation'
+              setFetchAgain(true);
             } else {
               setFieldError('Failed:', res.error);
             }
@@ -124,6 +126,8 @@ const ShippingInfo = ({ url }) => {
           )
         }}
       </Formik>
+      <AddressList url={url} fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
+      <button onClick={() => window.location.href=url + '/creditInformation'}>Billing Information</button>
     </div>
   );
 };
