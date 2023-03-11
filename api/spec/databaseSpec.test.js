@@ -10,12 +10,10 @@ describe('database', function() {
   beforeEach(async () => {
     const deletedUser = await sequelize.models.User.destroy({ where: { email: 'test@test.com' } });
     const deletedAddress = await sequelize.models.Address.destroy({ where: { line1: '213 Heggen Ave' } });
-    console.log('deleted', deletedUser, deletedAddress);
   });
 
   test('should save a user and return it when I query the database', async () => {
     try {
-      console.log('about to create user');
       const user = await sequelize.models.User.create({ email: 'test@test.com', passHash: 'lkdfjlkadsjflk', passSalt: 'dkflsjdlskajfljl' });
       const foundUser = await sequelize.models.User.findAll({ where: { email: 'test@test.com' }});
       expect(foundUser[0].dataValues.email).toBe('test@test.com');

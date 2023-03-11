@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { createUser } = require('../db/models/User.js');
 const { createSession } = require('../middleware/session-handler.js');
-const { compare, getUser } = require('../middleware/auth/index.js');
+const { compare, getUser, createAndAttachNewSession } = require('../middleware/auth/index.js');
 
 router.get('/', (req, res) => {
   if(req.session.dataValues.UserId) {
@@ -17,12 +17,7 @@ router.post('/start', (req, res) => {
   } else {
     res.json({ message: 'create an account!' })
   }
-})
-
-async function createAndAttachNewSession(req, res, UserId) {
-  req.session = await createSession(UserId);
-  res.cookie('s_id', req.session.dataValues.hash);
-}
+});
 
 router.post('/signIn', async (req, res) => {
   console.log('in signin');
@@ -114,22 +109,18 @@ router.post('/submitOrder', getUser, async (req, res) => {
     const cvv = req.body.cvv;
     //process order...
     const billingAccount = await res.locals.sequelize.models.BillingAccount.findOne({ where: { UserId: req.user.dataValues.id } });
-    console.log('billingAcc', !!billingAccount)
     const address = await res.locals.sequelize.models.Address.findOne({ where: { UserId: req.user.dataValues.id } });
-    console.log('address', !!address)
     const order = await res.locals.sequelize.models.Order.create({
       UserId: req.user.dataValues.id,
       BillingAccountId: billingAccount.dataValues.id,
       AddressId: address.dataValues.id
     });
-    console.log('order', !!order)
     const item = await res.locals.sequelize.models.Item.create({
       stock: 1,
       price: 100,
       name: 'Bag of Honey',
       description: 'A big bag of honey. Sack has 50L capacity, but it will probably be empty by the time it arrives.',
     });
-    console.log('item', !!item)
     const orderItems = await res.locals.sequelize.models.OrderItem.create({ quantity: 1, OrderId: order.dataValues.id });
     return res.json({ message: 'Order submitted!' });
   } catch(err) {

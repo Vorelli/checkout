@@ -29,7 +29,6 @@ const CreditInformation = ({ url }) => {
             const parsedMonth = parseInt(values.expirationDate.slice(0, 2));
             if(!Number.isNaN(parsedYear) && !Number.isNaN(parsedMonth)) {
               const parsedDate = (new Date(parsedMonth + '/05/' + parsedYear)).toJSON().slice(0, 10);
-              console.log(parsedDate);
               newValues.expirationDate = parsedDate;
               res = await fetch(url + '/api/checkout/creditInformation', {
                 method: 'POST',

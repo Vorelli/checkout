@@ -2,7 +2,6 @@ import { Formik } from 'formik';
 import { useState, useEffect } from 'react';
 
 function newDeepState(newState, current) {
-  console.log('updating', current, 'with', newState);
   var returningObj = {};
   var currentKeys = Object.keys(current);
   currentKeys.forEach(key => {
@@ -14,7 +13,6 @@ function newDeepState(newState, current) {
       returningObj[key] = newState[key] || current[key];
     }
   });
-  console.log('did it work?', returningObj);
   return returningObj;
 }
 
@@ -49,7 +47,6 @@ const SummaryPage = ({ url }) => {
       }
       setRes(res => {
         const result = newDeepState(json, res)
-        console.log('returning', result);
         return result;
       });
     });
@@ -97,15 +94,16 @@ const SummaryPage = ({ url }) => {
                 }
               });
               res = await res.json();
-              if(res.message === 'working on it!') {
-                window.location.href = url + '/summaryPage'
+              if(res.message === 'Order submitted!') {
+                window.location.href = url + '/orders'
               } else if (res.err === 'Go back to start') {
                 window.location.href = url + '/';
               } else {
-                setFieldError('Failed:', res && res.error || 'Failed');
+                console.log(res);
+                setFieldError('Failed:', [res && res.error || 'Failed']);
               }
             } catch(err) {
-              setFieldError('Error:', err);
+              setFieldError('Error:', [err]);
             }
             setSubmitting(false);
           }}

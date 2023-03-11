@@ -9,6 +9,8 @@ import SignUp from './components/SignUp.jsx';
 import ShippingInfo from './components/ShippingInfo.jsx';
 import CreditInformation from './components/CreditInformation.jsx';
 import SummaryPage from './components/SummaryPage.jsx';
+import Orders from './components/Orders.jsx';
+import Header from './components/Header.jsx';
 import ErrorPage from './components/ErrorPage.jsx';
 const url = 'http://localhost:4444';
 
@@ -18,7 +20,6 @@ const userAuth = (ev) => {
     method: 'POST'
   }).then(res => res.json())
     .then(resJson => {
-      console.log(resJson.message);
       if(resJson.message === 'logged in') {
         window.location.href = url + '/shippingInfo';
       } else {
@@ -26,6 +27,10 @@ const userAuth = (ev) => {
       }
     })
     .catch(err => console.log('error in fetch request to start checkout process', err));
+}
+
+const getLoggedIn = () => {
+  return fetch(url + '/api/user/').then(res => res.json()).then(res => !!res.email);
 }
 
 const router = createBrowserRouter([
@@ -50,6 +55,10 @@ const router = createBrowserRouter([
     element: <SummaryPage url={url} />
   },
   {
+    path: '/orders',
+    element: <Orders url={url} />
+  },
+  {
     path: '/',
     element: <App userAuth={userAuth} />,
     errorElement: <ErrorPage url={url} />
@@ -58,6 +67,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <Header url={url} getLoggedIn={getLoggedIn} />
     <RouterProvider router={router} />
   </React.StrictMode>
 );

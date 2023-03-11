@@ -26,10 +26,8 @@ var handleSession = async (req, res, next) => {
     }
   } else {
     req.session = await createSession();
-    console.log('creating session')
     res.cookie("s_id", req.session.dataValues.hash);
   }
-  console.log(req.session);
 
   next();
 };

@@ -52,7 +52,6 @@ const SignUp = ({ url }) => {
       }) => {
         let errorMsgs = [];
         for(let key in errors) {
-          console.log(errors[key])
           errors[key].forEach(msg => errorMsgs.push(<p key={msg}>{msg}</p>))
         }
         return (
